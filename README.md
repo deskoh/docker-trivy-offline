@@ -15,17 +15,17 @@ docker build . -t trivy
 # Scan image (e.g. nginx:alpine)
 docker run --rm \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  trivy nginx:alpine
+  trivy --skip-update nginx:alpine
 
 # Scan filesystem / app dependencies (e.g. /path/to/project)
 docker run --rm \
   -v /path/to/project:/src \
-  trivy fs /src
+  trivy --skip-update fs /src
 
 # CI Example
 docker run --rm \
   -v /path/to/project:/src \
-  trivy fs \
+  trivy --skip-update fs \
   -f json -o /src/trivy.json \
   --exit-code 1 --severity CRITICAL,HIGH \
   /src
