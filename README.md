@@ -15,12 +15,12 @@ docker build . -t trivy
 # Scan image (e.g. nginx:alpine)
 docker run --rm \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  trivy --skip-update nginx:alpine
+  trivy nginx:alpine
 
 # Scan filesystem / app dependencies (e.g. /path/to/project)
 docker run --rm \
   -v /path/to/project:/src \
-  trivy --skip-update fs /src
+  trivy fs /src
 
 # CI Example
 docker run --rm \

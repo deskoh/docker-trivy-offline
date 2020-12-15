@@ -4,10 +4,14 @@ RUN apk upgrade \
   && apk add --no-cache su-exec \
   && rm -rf /var/cache/apk/*
 
-RUN mkdir -p /root/.cache/trivy/db/ && \
-    cd /root/.cache/trivy/db/ && \
-    wget https://github.com/aquasecurity/trivy-db/releases/latest/download/trivy-offline.db.tgz && \
-    tar xvf trivy-offline.db.tgz
+ENV TRIVY_CACHE_DIR=/.cache/trivy
+
+RUN trivy --download-db-only \
+  # Support other uid
+ && find /.cache -type d -exec chmod 777 {} \; \
+ && find /.cache -type f -exec chmod 666 {} \;
+
+ENV TRIVY_SKIP_UPDATE=true
 
 ADD docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
